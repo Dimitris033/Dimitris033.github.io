@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dimitris Neofytou · Graphics &amp; Multimedia, Cyprus</title>
+<meta name="description" content="Dimitris Neofytou, graphics and multimedia designer in Cyprus. Websites, accessibility, 3D, games and photography.">
+
+<!-- ===========================================================
+     EDIT GUIDE - search for  CHANGE
+     images folder next to this file:
+       me.jpg  me-2.jpg  accessiview.jpg
+       temple-1.jpg  temple-2.jpg  temple-3.jpg  temple-4.jpg  temple-5.jpg
+     images/totem/ folder:
+       p01.jpg  p02.jpg  p03.jpg ... one file per page of the book
+
+     THE SLIDER - add or remove a photo by adding or deleting one
+     <img class="slide"> line inside <div class="slides">. The dots,
+     the counter and the timing all update by themselves.
+     =========================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Permanent+Marker&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --black:#0A0A0A;
+  --black-2:#131313;
+  --black-3:#1A1A1A;
+  --white:#FFFFFF;
+  --soft:#CFCFCF;
+  --grey:#8A8A8A;
+  --yellow:#F2B705;
+  --yellow-2:#FFD230;
+  --line:rgba(255,255,255,.10);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;font-size:17px;
+  line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-family:'Archivo',sans-serif;font-weight:800;letter-spacing:-.02em}
+.wrap{width:100%;max-width:1500px;margin:0 auto;padding:0 clamp(22px,4vw,70px)}
+
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--yellow);z-index:90;transition:width .1s linear}
+
+#grain{position:fixed;inset:0;z-index:95;pointer-events:none;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grainShift 8s steps(6) infinite}
+@keyframes grainShift{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-4%)}
+  60%{transform:translate(-3%,-3%)}80%{transform:translate(4%,4%)}100%{transform:translate(0,0)}}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:80;background:rgba(10,10,10,.86);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line)}
+.nav-in{max-width:1500px;margin:0 auto;padding:22px clamp(22px,4vw,70px);
+  display:flex;align-items:center;justify-content:space-between;gap:22px;transition:padding .35s var(--ease)}
+.nav.small .nav-in{padding-top:13px;padding-bottom:13px}
+.brand{font-family:'Permanent Marker',cursive;font-weight:400;font-size:1.45rem;letter-spacing:.01em;
+  transition:font-size .35s var(--ease)}
+.brand i{color:var(--yellow);font-style:normal}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:.9rem;font-weight:600;color:var(--grey);position:relative;padding:4px 0;transition:color .25s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--yellow);
+  transition:width .3s var(--ease)}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+@media(max-width:700px){.nav-links{gap:16px}.nav-links a{font-size:.78rem}}
+@media(max-width:520px){.nav-links a:nth-child(n+3){display:none}}
+
+/* ---------- hero ---------- */
+.hero{min-height:min(92vh,980px);display:flex;align-items:center;padding:clamp(40px,6vh,70px) 0;position:relative;overflow:hidden}
+.hero .ring{position:absolute;left:-10%;top:-24%;width:clamp(300px,44vw,660px);aspect-ratio:1;border-radius:50%;
+  background:repeating-radial-gradient(circle,var(--yellow) 0 2px,transparent 2px 14px);
+  opacity:.32;animation:spin 110s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero .inner{position:relative;z-index:2}
+.hero h1{font-family:'Permanent Marker',cursive;font-weight:400;font-size:clamp(2.9rem,9.2vw,10.2rem);line-height:.98;text-transform:uppercase;letter-spacing:.01em}
+.hero h1 span{display:block;overflow:hidden}
+.hero h1 b{display:block;font-weight:800;transform:translateY(105%);animation:rise 1s var(--ease) forwards}
+.hero h1 span:nth-child(1) b{animation-delay:.15s}
+.hero h1 span:nth-child(2) b{animation-delay:.3s;color:var(--yellow)}
+@keyframes rise{to{transform:none}}
+@keyframes up{to{opacity:1;transform:none}}
+.hero .hi{font-family:'Permanent Marker',cursive;color:var(--yellow);font-size:clamp(1.1rem,1.8vw,1.5rem);margin-top:22px;opacity:0;transform:translateY(14px);animation:up .8s .55s var(--ease) forwards}
+.hero .say{margin-top:14px;max-width:52ch;font-size:clamp(1.02rem,1.5vw,1.2rem);color:var(--soft);
+  opacity:0;transform:translateY(14px);animation:up .8s .7s var(--ease) forwards}
+.hero .acts{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px;
+  opacity:0;transform:translateY(14px);animation:up .8s .8s var(--ease) forwards}
+.pill{display:inline-flex;align-items:center;gap:9px;background:var(--yellow);color:var(--black);
+  font-weight:700;padding:14px 30px;border-radius:100px;font-size:.94rem;
+  transition:transform .25s var(--ease),background .25s,gap .25s}
+.pill:hover{background:var(--yellow-2);transform:translateY(-3px);gap:14px}
+.pill.ghost{background:none;border:1.5px solid var(--line);color:var(--white)}
+.pill.ghost:hover{border-color:var(--yellow);color:var(--yellow)}
+
+
+/* hero layout: name left, photo right */
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(28px,4vw,70px);align-items:center;width:100%}
+.pol-wrap{position:relative;max-width:400px;margin-left:auto}
+.hero .pol{position:relative;background:var(--white);padding:13px;
+  transform:rotate(3deg);box-shadow:0 30px 70px rgba(0,0,0,.6);
+  opacity:0;animation:polIn .9s .55s var(--ease) forwards}
+@keyframes polIn{from{opacity:0;transform:rotate(8deg) translateY(26px)}to{opacity:1;transform:rotate(3deg) translateY(0)}}
+/* the card sits outside the tilted frame, so its text stays sharp */
+.id-card{position:absolute;right:-16px;bottom:-22px;z-index:6;width:min(232px,74%);
+  background:var(--yellow);color:#111;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.id-card .bar{display:flex;align-items:center;justify-content:flex-end;
+  background:#111;color:var(--yellow);padding:5px 10px}
+.id-card .bar b{font-size:.85rem;line-height:1}
+.id-card .in{padding:12px 14px 14px}
+.id-card .nm{font-family:'Archivo',sans-serif;font-weight:800;font-size:1.05rem;
+  line-height:1.15;letter-spacing:-.01em}
+.id-card .ln{font-size:.79rem;line-height:1.4;opacity:.8;margin-top:1px}
+.id-card .age{display:inline-block;margin-top:7px;font-family:'Permanent Marker',cursive;font-size:1rem}
+.hero .pol:hover{transform:rotate(0)}
+.hero .pol{transition:transform .5s var(--ease)}
+/* if you save the cutout as a transparent PNG, this colour shows behind you.
+   change var(--yellow) to any colour to try it out */
+.hero .pol img{width:100%;aspect-ratio:4/4.3;object-fit:cover;background:var(--yellow)}
+.hero .pol .tape{position:absolute;width:88px;height:25px;background:rgba(242,183,5,.9);z-index:4;
+  box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.hero .pol .tape.t1{left:-24px;top:-9px;transform:rotate(-42deg)}
+.hero .pol .tape.t2{right:-24px;top:-9px;transform:rotate(42deg)}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}.pol-wrap{margin:34px auto 0;max-width:320px}}
+
+/* ---------- sections ---------- */
+section{padding:clamp(56px,8vh,100px) 0}
+.sec-lab{display:inline-flex;align-items:center;gap:10px;color:var(--yellow);font-family:'Archivo',sans-serif;
+  font-weight:700;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px}
+.sec-lab .star{font-size:1.2em;line-height:1}
+h2.sec{font-size:clamp(1.8rem,4vw,3rem);text-transform:uppercase;position:relative;display:inline-block}
+h2.sec::after{content:"";position:absolute;left:-6px;right:-10px;bottom:.12em;height:.28em;background:var(--yellow);
+  opacity:.85;z-index:-1;border-radius:2px;
+  transform:scaleX(0) skewX(-8deg);transform-origin:left;transition:transform .8s .1s var(--ease)}
+.reveal.in h2.sec::after{transform:scaleX(1) skewX(-8deg)}
+.sub{color:var(--soft);max-width:58ch;margin-top:26px}
+
+/* ---------- about ---------- */
+.about{display:grid;grid-template-columns:1fr .74fr;gap:clamp(34px,5vw,90px);align-items:center}
+.about p{color:var(--soft);max-width:50ch}
+.about p + p{margin-top:16px}
+.contact-row{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px}
+.contact-row a{border:1.5px solid var(--line);border-radius:100px;padding:11px 20px;font-size:.9rem;
+  font-weight:600;transition:.25s var(--ease)}
+.contact-row a:hover{border-color:var(--yellow);color:var(--yellow);transform:translateY(-2px)}
+@media(max-width:900px){.about{grid-template-columns:1fr}.polaroid{margin:0 auto}}
+
+
+/* ---------- about collage (reference style) ---------- */
+.about-collage{display:grid;grid-template-columns:1fr .95fr;gap:clamp(28px,4vw,80px);align-items:center;margin-top:40px}
+.about-collage .iam{font-family:'Permanent Marker',cursive;font-size:clamp(1.4rem,2.4vw,2rem);line-height:1.2;margin-bottom:14px}
+.about-collage .iam b{color:var(--yellow);font-weight:400}
+.about-collage .say{color:var(--soft);margin-bottom:14px;max-width:52ch}
+.contact-lab{display:inline-flex;align-items:center;gap:10px;margin-top:22px;font-family:'Permanent Marker',cursive;color:var(--yellow);font-size:1.1rem}
+
+.collage{position:relative;max-width:520px;justify-self:end;padding:40px 0}
+.collage .frame{position:relative;background:var(--white);padding:14px;box-shadow:0 30px 70px rgba(0,0,0,.6);transform:rotate(2deg);transition:transform .5s var(--ease);z-index:2}
+.collage:hover .frame{transform:rotate(0)}
+.collage .frame img{width:100%;aspect-ratio:4/4.6;object-fit:cover;background:var(--black-3);
+  /* yellow duotone effect */
+  filter:sepia(1) saturate(4) hue-rotate(-8deg) contrast(1.1);
+  mix-blend-mode:normal}
+@media(max-width:900px){.about-collage{grid-template-columns:1fr}.collage{justify-self:center;max-width:380px}}
+
+/* ---------- work ---------- */
+.piece{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,4vw,64px);align-items:center;
+  padding:clamp(36px,5vw,62px) 0;border-top:1px solid var(--line)}
+.piece:first-of-type{margin-top:38px}
+.piece:nth-of-type(even){direction:rtl}
+.piece:nth-of-type(even) > *{direction:ltr}
+.shot{position:relative;overflow:hidden;background:var(--black-2);border:1px solid var(--line);
+  border-radius:4px;transition:transform .7s var(--ease)}
+.piece:hover .shot{transform:scale(1.015)}
+.shot img,.shot iframe{width:100%;aspect-ratio:16/10;object-fit:cover;border:0;display:block;will-change:transform}
+.shot::after{content:"";position:absolute;inset:0;background:var(--black);transform-origin:right;
+  transition:transform 1s var(--ease)}
+.reveal.in .shot::after{transform:scaleX(0)}
+.kind{font-weight:600;font-size:.8rem;color:var(--yellow);margin-bottom:10px}
+.piece h3{font-size:clamp(1.6rem,3.2vw,2.5rem);line-height:1.1;text-transform:uppercase}
+.piece > div > p{color:var(--soft);margin-top:14px;max-width:48ch}
+.go{display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-weight:700;font-size:.88rem;
+  color:var(--black);background:var(--yellow);padding:12px 24px;border-radius:100px;
+  transition:gap .25s var(--ease),transform .25s var(--ease),background .25s}
+.go:hover{gap:13px;transform:translateY(-2px);background:var(--yellow-2)}
+@media(max-width:900px){.piece,.piece:nth-of-type(even){grid-template-columns:1fr;direction:ltr;gap:24px}}
+
+
+/* ===========================================================
+   SLIDER - a photo strip inside a project card
+   =========================================================== */
+.slider{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;background:var(--black-3)}
+.slides{position:absolute;inset:0}
+.shot .slider .slide{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;
+  object-fit:cover;filter:none;opacity:0;transform:scale(1.07);
+  transition:opacity .9s var(--ease);will-change:opacity}
+.shot .slider .slide.on{opacity:1;transform:scale(1);transition:opacity .9s var(--ease),transform 7s linear}
+
+/* frame counter, bottom left - reads like a camera */
+.s-count{position:absolute;left:14px;bottom:14px;z-index:4;
+  font-family:'Archivo',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.16em;
+  color:var(--yellow);background:rgba(10,10,10,.72);padding:6px 12px;border-radius:3px;
+  pointer-events:none}
+.s-count b{color:var(--white);font-weight:800}
+
+/* dots, bottom right */
+.dots{position:absolute;right:14px;bottom:14px;z-index:4;display:flex;gap:7px}
+.dots button{width:11px;height:11px;padding:0;border:1.5px solid var(--yellow);background:none;
+  border-radius:2px;cursor:pointer;transition:background .3s var(--ease),transform .3s var(--ease)}
+.dots button:hover{transform:scale(1.25)}
+.dots button.on{background:var(--yellow)}
+
+/* arrows, fade in on hover */
+.s-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:4;
+  width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;
+  background:rgba(10,10,10,.7);color:var(--yellow);font-size:1.5rem;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .3s var(--ease),background .25s,color .25s}
+.slider:hover .s-arrow,.s-arrow:focus-visible{opacity:1}
+.s-arrow:hover{background:var(--yellow);color:var(--black)}
+.s-arrow.prev{left:12px}
+.s-arrow.next{right:12px}
+
+/* thin timing bar along the bottom - same idea as the scroll bar up top */
+.s-bar{position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--yellow);z-index:4;opacity:.9}
+
+@media(max-width:520px){
+  .s-arrow{opacity:1;width:38px;height:38px;background:rgba(10,10,10,.6)}
+  .s-count{font-size:.68rem;padding:5px 9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .shot .slider .slide.on{transform:none}
+  .s-bar{display:none}
+}
+
+
+/* ---------- tag rows + the small kit strip under About ---------- */
+ul.tags{list-style:none;display:flex;flex-wrap:wrap;gap:7px}
+ul.tags li{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:100px;
+  padding:7px 14px;font-size:.87rem;color:var(--soft);
+  transition:background .25s,color .25s,border-color .25s,transform .25s}
+ul.tags li:hover{background:var(--yellow);color:#111;border-color:var(--yellow);transform:translateY(-2px)}
+ul.tags em{font-style:normal;font-size:.82em;opacity:.7;margin-left:5px}
+
+.kit{margin-top:clamp(40px,6vw,70px);padding-top:clamp(26px,4vw,44px);
+  border-top:1px solid var(--line);display:grid;gap:18px}
+.kit-row{display:grid;grid-template-columns:150px 1fr;gap:clamp(14px,2vw,28px);align-items:baseline}
+.kit-row h4{font-family:'Permanent Marker',cursive;font-weight:400;color:var(--yellow);
+  font-size:1.05rem;letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.kit-row p{color:var(--soft);font-size:.92rem}
+@media(max-width:640px){.kit-row{grid-template-columns:1fr;gap:9px}}
+
+/* ---------- albums ---------- */
+.albums{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:44px}
+.alb{position:relative;background:var(--white);padding:12px 12px 46px;
+  transition:opacity .7s var(--ease),transform .55s var(--ease),box-shadow .45s}
+.alb:hover{transform:translateY(-9px);box-shadow:0 26px 60px rgba(0,0,0,.55)}
+.alb img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--black-3)}
+.alb .cap{position:absolute;left:15px;bottom:14px;color:#111;font-family:'Archivo',sans-serif;
+  font-weight:700;font-size:.95rem}
+@media(max-width:860px){.albums{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.albums{grid-template-columns:1fr}}
+
+/* ---------- totem book ---------- */
+.book-wrap{margin-top:44px}
+.book{position:relative;width:min(100%,940px);aspect-ratio:296/210;margin:0 auto;
+  perspective:2600px;background:var(--black-2);border:1px solid var(--line);border-radius:3px;
+  box-shadow:0 40px 80px rgba(0,0,0,.6);cursor:pointer;user-select:none}
+.book:focus-visible{outline:3px solid var(--yellow);outline-offset:4px}
+
+/* the two static pages underneath, seen at the start and at the end */
+.board{position:absolute;top:0;bottom:0;width:50%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;text-align:center;padding:clamp(18px,3vw,40px)}
+.board.l{left:0}
+.board.r{right:0}
+.board .bt{font-family:'Permanent Marker',cursive;color:var(--yellow);line-height:1.1;
+  font-size:clamp(1.3rem,2.6vw,2.2rem)}
+.board p{color:var(--grey);font-size:.85rem;line-height:1.5;max-width:26ch}
+
+/* one leaf is one sheet of paper, an image on each side */
+.leaf{position:absolute;top:0;right:0;width:50%;height:100%;
+  transform-origin:left center;transform-style:preserve-3d;
+  transition:transform .85s var(--ease)}
+.leaf.turned{transform:rotateY(-180deg)}
+.face{position:absolute;inset:0;overflow:hidden;background:var(--black-3);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face img{width:100%;height:100%;object-fit:cover;display:block}
+.face.back{transform:rotateY(180deg)}
+.face::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(0,0,0,0) 14%)}
+.spine{position:absolute;left:50%;top:0;bottom:0;width:3px;transform:translateX(-1.5px);z-index:20;
+  background:linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,.75),rgba(0,0,0,0));pointer-events:none}
+.book .c{position:absolute;width:26px;height:26px;z-index:30;pointer-events:none;
+  opacity:0;transition:opacity .5s .35s var(--ease)}
+
+.book-bar{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:22px}
+.b-btn{border:1.5px solid var(--line);background:none;color:var(--white);border-radius:100px;
+  padding:10px 20px;font-family:'Inter',sans-serif;font-size:.86rem;font-weight:600;cursor:pointer;
+  transition:.25s var(--ease)}
+.b-btn:hover{border-color:var(--yellow);color:var(--yellow);transform:translateY(-2px)}
+.b-btn[disabled]{opacity:.35;cursor:default;transform:none;border-color:var(--line);color:var(--white)}
+.b-count{font-family:'Archivo',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.16em;
+  color:var(--yellow);padding:0 8px}
+.b-count b{color:var(--white);font-weight:800}
+@media(max-width:560px){.board p{display:none}.board .bt{font-size:1.1rem}}
+
+/* ---------- contact ---------- */
+.end{text-align:center;padding:clamp(80px,12vh,150px) 0}
+.end h2{font-size:clamp(2.2rem,7.5vw,6rem);line-height:1;text-transform:uppercase}
+.end h2 em{display:block;font-style:normal;overflow:hidden}
+.end h2 em s{display:block;text-decoration:none;transform:translateY(105%);transition:transform .9s var(--ease)}
+.end h2.in em:nth-child(1) s{transition-delay:.05s}
+.end h2.in em:nth-child(2) s{transition-delay:.18s}
+.end h2.in em s{transform:none}
+.end h2 i{color:var(--yellow);font-style:normal}
+.end .mail{display:inline-block;margin-top:34px;background:var(--yellow);color:var(--black);font-weight:700;
+  font-size:clamp(1rem,1.9vw,1.25rem);padding:17px 42px;border-radius:100px;transition:.3s var(--ease)}
+.end .mail:hover{background:var(--yellow-2);transform:translateY(-4px)}
+.end .socials{margin-top:26px;display:flex;flex-wrap:wrap;gap:26px;justify-content:center;
+  font-weight:600;font-size:.9rem}
+.end .socials a{border-bottom:2px solid transparent;padding-bottom:3px;transition:.25s}
+.end .socials a:hover{border-color:var(--yellow);color:var(--yellow)}
+
+footer{border-top:1px solid var(--line);padding:24px 0}
+.foot{color:var(--grey);font-size:.82rem}
+
+#top{position:fixed;right:22px;bottom:22px;z-index:85;width:50px;height:50px;border-radius:50%;
+  background:var(--yellow);color:var(--black);display:flex;align-items:center;justify-content:center;
+  font-size:1.15rem;font-weight:800;box-shadow:0 10px 30px rgba(0,0,0,.5);
+  opacity:0;pointer-events:none;transform:translateY(14px);
+  transition:opacity .35s var(--ease),transform .35s var(--ease),background .25s}
+#top.show{opacity:1;pointer-events:auto;transform:none}
+#top:hover{background:var(--yellow-2)}
+
+
+
+
+/* ---------- rotating badge in hero ---------- */
+.badge{position:absolute;right:clamp(20px,6vw,90px);top:clamp(90px,16vh,180px);z-index:3;
+  width:clamp(110px,13vw,170px);aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.badge svg{width:100%;height:100%;animation:spin 24s linear infinite}
+.badge svg text{font-family:'Archivo',sans-serif;font-weight:700;font-size:11.5px;letter-spacing:.32em;
+  text-transform:uppercase;fill:var(--yellow)}
+.badge .mid{position:absolute;font-size:1.6rem}
+@media(max-width:760px){.badge{display:none}}
+
+/* ---------- scribble ring around the yellow surname ---------- */
+.hero h1 .scrib{position:relative;display:inline-block}
+.hero h1 .scrib svg{position:absolute;left:-5%;top:-10%;width:110%;height:124%;pointer-events:none}
+.hero h1 .scrib path{stroke:var(--yellow);stroke-width:5;fill:none;stroke-linecap:round;
+  stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.1s 1s var(--ease) forwards;opacity:.9}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* ---------- image duotone that lifts on hover ---------- */
+.shot img{filter:grayscale(.35) contrast(1.03);transition:filter .6s var(--ease)}
+.piece:hover .shot img,.alb:hover img{filter:none}
+.alb img{filter:grayscale(.3);transition:filter .6s var(--ease)}
+
+/* ---------- go button arrow nudge ---------- */
+.go b{font-weight:700;transition:transform .25s var(--ease)}
+.go:hover b{transform:translateX(4px)}
+
+
+
+/* ---------- viewfinder corners (reference style) ---------- */
+.shot .c,.polaroid .c{position:absolute;width:26px;height:26px;z-index:3;pointer-events:none;
+  opacity:0;transition:opacity .5s .35s var(--ease)}
+.reveal.in .c{opacity:1}
+.pol .c{width:20px;height:20px}
+.pol .c.tl{top:24px!important;left:24px!important}.pol .c.tr{top:24px!important;right:24px!important}
+.pol .c.bl{bottom:24px!important;left:24px!important}.pol .c.br{bottom:24px!important;right:24px!important}
+.c.tl{top:10px;left:10px;border-top:3px solid var(--yellow);border-left:3px solid var(--yellow)}
+.c.tr{top:10px;right:10px;border-top:3px solid var(--yellow);border-right:3px solid var(--yellow)}
+.c.bl{bottom:10px;left:10px;border-bottom:3px solid var(--yellow);border-left:3px solid var(--yellow)}
+.c.br{bottom:10px;right:10px;border-bottom:3px solid var(--yellow);border-right:3px solid var(--yellow)}
+
+/* thin offset outline behind each project image */
+.piece .shot{margin-left:10px;margin-top:10px}
+.piece .shot::before{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.22);
+  transform:translate(-10px,-10px);z-index:0;pointer-events:none;transition:transform .6s var(--ease)}
+.piece:hover .shot::before{transform:translate(-14px,-14px)}
+
+
+/* ---------- decorative sparks + doodles (reference style) ---------- */
+.spark{position:absolute;color:var(--yellow);pointer-events:none;z-index:1;line-height:1;
+  font-size:clamp(2rem,4.5vw,4.2rem);animation:sparkSpin 14s linear infinite}
+.spark.slow{animation-duration:26s}
+@keyframes sparkSpin{to{transform:rotate(360deg)}}
+.doodle{position:absolute;pointer-events:none;z-index:1;opacity:.8}
+.doodle path{stroke:var(--yellow);stroke-width:3;fill:none;stroke-linecap:round}
+.dash{position:absolute;pointer-events:none;z-index:0;opacity:.5}
+.dash path{stroke:var(--yellow);stroke-width:2;fill:none;stroke-dasharray:3 10;stroke-linecap:round}
+
+/* hero placements */
+.hero .spark.a{right:clamp(14%,18vw,22%);top:16%}
+.hero .spark.b{left:clamp(38%,44vw,50%);bottom:14%;font-size:clamp(1.3rem,2.4vw,2.2rem)}
+.hero .dash.a{right:-40px;bottom:-30px;width:clamp(220px,30vw,460px)}
+/* work */
+#work .spark.a{right:clamp(20px,5vw,80px);top:54px;font-size:clamp(1.6rem,3vw,2.6rem)}
+#work .dash.a{left:-60px;top:32%;width:clamp(200px,26vw,380px);transform:rotate(12deg)}
+/* albums */
+#albums .doodle.arrow{left:clamp(46%,52vw,58%);top:40px;width:clamp(90px,10vw,150px)}
+#albums .spark.a{left:clamp(20px,4vw,60px);bottom:60px;font-size:clamp(1.5rem,2.6vw,2.4rem)}
+/* about */
+#about .spark.a{right:clamp(6%,10vw,14%);top:60px}
+#about .dash.a{left:-50px;bottom:-20px;width:clamp(200px,26vw,400px);transform:rotate(-8deg)}
+/* contact */
+.end .spark.a{left:clamp(10%,14vw,18%);top:26%}
+.end .spark.b{right:clamp(10%,14vw,18%);bottom:24%;font-size:clamp(1.4rem,2.6vw,2.4rem)}
+@media(max-width:760px){.spark,.doodle,.dash{display:none}}
+
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+a:focus-visible,button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .reveal,.hero .say,.hero .acts{opacity:1;transform:none}
+  .hero h1 b,.end h2 em s{transform:none}
+  .shot::after{display:none}#grain{display:none}
+  h2.sec::after{transform:scaleX(1)}
+  .hero h1 .scrib path{stroke-dashoffset:0}
+  .shot .slider .slide{transition:opacity .01s!important}
+}
+</style>
+</head>
+<body>
+
+<div id="bar"></div>
+<div id="grain" aria-hidden="true"></div>
+
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="brand" href="#">Dimitris<i>.</i></a>
+    <nav class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#albums">Totem</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <span class="ring" aria-hidden="true"></span>
+  <span class="spark a" aria-hidden="true">✳</span>
+  <span class="spark b slow" aria-hidden="true">✳</span>
+  <svg class="dash a" viewBox="0 0 400 160" aria-hidden="true"><path d="M8,150 C90,40 250,20 392,60"/></svg>
+  <span class="badge" aria-hidden="true">
+    <svg viewBox="0 0 100 100"><defs><path id="cir" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs>
+      <text><textPath href="#cir">graphics · multimedia · cyprus · portfolio · </textPath></text></svg>
+    <span class="mid">✳</span>
+  </span>
+  <div class="wrap inner">
+    <div class="hero-grid">
+      <div>
+        <h1><span><b class="scrib">Dimitris<i class="dot">.</i>
+          <svg viewBox="0 0 300 90" preserveAspectRatio="none" aria-hidden="true">
+            <path pathLength="1" d="M12,62 C40,22 250,14 284,38 C300,50 240,78 120,76 C60,75 18,70 24,52"/>
+          </svg></b></span></h1>
+        <p class="hi">Hi, I'm Dimitris.</p>
+        <!-- CHANGE: make this yours -->
+        <p class="say">I'm an undergraduate in graphics and multimedia at the Cyprus University of
+          Technology. I build websites, work in Blender and read a lot of history. These are the
+          projects I'm proudest of so far.</p>
+        <div class="acts">
+          <a class="pill" href="#work">See the work <b>→</b></a>
+          <a class="pill ghost" href="#contact">Get in touch</a>
+        </div>
+      </div>
+      <div class="pol-wrap">
+        <div class="pol">
+          <span class="tape t1" aria-hidden="true"></span>
+          <span class="tape t2" aria-hidden="true"></span>
+          <!-- CHANGE: a photo of you, images/me.jpg -->
+          <img src="images/me.jpg" alt="Dimitris Neofytou">
+        </div>
+        <div class="id-card">
+          <div class="bar"><b aria-hidden="true">×</b></div>
+          <div class="in">
+            <p class="nm">Dimitris Neofytou</p>
+            <p class="ln">Multimedia artist</p>
+            <span class="age">22 years old</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= WORK ================= -->
+<section id="work">
+  <span class="spark a slow" aria-hidden="true">✳</span>
+  <svg class="dash a" viewBox="0 0 380 140" aria-hidden="true"><path d="M6,120 C110,30 260,110 374,24"/></svg>
+  <div class="wrap">
+    <div class="reveal"><h2 class="sec">Work</h2></div>
+
+    <article class="piece reveal">
+      <div class="shot"><img src="images/accessiview.jpg" alt="AccessiView Chrome extension"></div>
+      <div>
+        <p class="kind">Chrome extension</p>
+        <h3>AccessiView</h3>
+        <a class="go" href="https://dimitris033.github.io/accessiview-site/" target="_blank" rel="noopener">Visit the site <b>→</b></a>
+      </div>
+    </article>
+
+    <article class="piece reveal">
+      <div class="shot"><iframe src="https://dimitris033.github.io/voices-of-cyprus/" title="Voices of Cyprus, interactive map" loading="lazy" style="aspect-ratio:16/11"></iframe></div>
+      <div>
+        <p class="kind">Interactive map</p>
+        <h3>Voices of Cyprus</h3>
+        <a class="go" href="https://dimitris033.github.io/voices-of-cyprus/" target="_blank" rel="noopener">Open full screen <b>→</b></a>
+      </div>
+    </article>
+
+    <!-- ============ THE TEMPLE - SLIDER GOES HERE ============
+         Drop your renders into  images/  and name them
+         temple-1.jpg … temple-5.jpg
+         Add a photo = add one <img class="slide"> line.
+         Remove one = delete its line. Nothing else to touch.
+         ======================================================= -->
+    <article class="piece reveal">
+      <div class="shot">
+        <div class="slider" data-slider data-speed="5000">
+          <div class="slides">
+            <img class="slide on" src="images/temple-1.jpg" alt="Greek temple, wide view from the sea">
+            <img class="slide" src="images/temple-2.jpg" alt="Greek temple, front steps and pediment">
+            <img class="slide" src="images/temple-3.jpg" alt="Greek temple, the colonnade from the side">
+            <img class="slide" src="images/temple-4.jpg" alt="Greek temple, detail of the capitals">
+            <img class="slide" src="images/temple-5.jpg" alt="Greek temple, clay render, geometry only">
+          </div>
+          <button class="s-arrow prev" type="button" aria-label="Previous photo">‹</button>
+          <button class="s-arrow next" type="button" aria-label="Next photo">›</button>
+          <span class="s-count" aria-hidden="true"></span>
+          <div class="dots" role="tablist" aria-label="Choose a photo"></div>
+          <span class="s-bar" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div>
+        <p class="kind">3D model</p>
+        <h3>Greek temple</h3>
+        <!-- CHANGE: delete this button if you'd rather not link the Sketchfab version -->
+        <a class="go" href="https://sketchfab.com/3d-models/greek-temple-03b83fcdb69c4846a156921ffbeb190e" target="_blank" rel="noopener">Turn it in 3D <b>→</b></a>
+      </div>
+    </article>
+
+    <article class="piece reveal">
+      <div class="shot">
+        <iframe src="https://www.youtube.com/embed/OngH1GZV-KM" title="Dungeon Grind trailer" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div>
+        <p class="kind">Game</p>
+        <h3>Dungeon Grind</h3>
+        <a class="go" href="https://dimitris0303.itch.io/dungeon-grind" target="_blank" rel="noopener">Download it <b>→</b></a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ================= ALBUMS ================= -->
+<section id="albums">
+  <svg class="doodle arrow" viewBox="0 0 150 70" aria-hidden="true">
+    <path d="M8,52 C50,10 96,10 128,30"/><path d="M112,18 L130,31 L110,42"/>
+  </svg>
+  <span class="spark a slow" aria-hidden="true">✳</span>
+  <div class="wrap">
+    <div class="reveal"><h2 class="sec">Totem</h2></div>
+    <p class="sub reveal">A photo book I made and printed at university.</p>
+
+    <!-- ============ THE BOOK ============
+         Photos go in  images/totem/  named p01.jpg, p02.jpg and so on.
+         p01 is the cover, then every leaf below holds two of them.
+         To add pages, copy one whole <div class="leaf"> block and bump
+         the numbers. Everything else updates on its own.
+
+         Sound: it makes its own paper noise, so it works straight away.
+         If you'd rather use a real recording, drop an mp3 at
+         sounds/page-turn.mp3 and it will use that instead.
+         ==================================== -->
+    <div class="book-wrap reveal">
+      <div class="book" data-book tabindex="0" role="group" aria-label="Totem, page by page">
+        <div class="board l">
+          <span class="bt">Totem</span>
+        </div>
+        <div class="board r"></div>
+        <div class="leaf">
+          <div class="face front"><img src="images/totem/p1.jpg" alt="Totem, cover"></div>
+          <div class="face back"><img src="images/totem/p02.jpg" alt="Totem, page 2"></div>
+        </div>
+        <div class="leaf">
+          <div class="face front"><img src="images/totem/p03.jpg" alt="Totem, page 3"></div>
+          <div class="face back"><img src="images/totem/p04.jpg" alt="Totem, page 4"></div>
+        </div>
+        <div class="leaf">
+          <div class="face front"><img src="images/totem/p05.jpg" alt="Totem, page 5"></div>
+          <div class="face back"><img src="images/totem/p06.jpg" alt="Totem, page 6"></div>
+        </div>
+        <div class="leaf">
+          <div class="face front"><img src="images/totem/p07.jpg" alt="Totem, page 7"></div>
+          <div class="face back"><img src="images/totem/p08.jpg" alt="Totem, page 8"></div>
+        </div>
+        <div class="leaf">
+          <div class="face front"><img src="images/totem/p09.jpg" alt="Totem, page 9"></div>
+          <div class="face back"><img src="images/totem/p10.jpg" alt="Totem, page 10"></div>
+        </div>
+        <div class="leaf">
+          <div class="face front"><img src="images/totem/p11.jpg" alt="Totem, page 11"></div>
+          <div class="face back"><img src="images/totem/p12.jpg" alt="Totem, page 12"></div>
+        </div>
+        <div class="leaf">
+          <div class="face front"><img src="images/totem/p13.jpg" alt="Totem, page 13"></div>
+          <div class="face back"><img src="images/totem/p1.jpg" alt="Totem, back cover"></div>
+        </div>
+        <span class="spine" aria-hidden="true"></span>
+      </div>
+
+      <div class="book-bar">
+        <button class="b-btn" type="button" data-prev>‹ Back</button>
+        <span class="b-count" aria-live="polite"></span>
+        <button class="b-btn" type="button" data-next>Next ›</button>
+      </div>
+
+      <audio preload="auto" src="sounds/page-turn.mp3"></audio>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <span class="spark a" aria-hidden="true">✳</span>
+  <svg class="dash a" viewBox="0 0 400 140" aria-hidden="true"><path d="M10,20 C120,120 280,40 390,110"/></svg>
+  <div class="wrap">
+    <div class="reveal"><h2 class="sec">About me</h2></div>
+
+    <div class="about-collage">
+      <div class="reveal">
+        <p class="iam">I am <b>Dimitris.</b></p>
+        <p class="say">I'm a multimedia artist, still studying at the Cyprus University of
+          Technology. Most of my work is coding, games and Blender.</p>
+        <p class="say">I like the projects I have to research before I can design them.</p>
+        <p class="say">Outside that: photography, piano, guitar, writing songs and history.</p>
+        <p class="contact-lab"><span class="star">✳</span> Contact me</p>
+        <div class="contact-row">
+          <a href="mailto:dimitrisneo3333@gmail.com">✉ dimitrisneo3333@gmail.com</a>
+          <a href="https://github.com/Dimitris033" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/dimitris-neofytou-130b9834b/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+
+      <div class="collage reveal">
+        <div class="frame">
+          <!-- CHANGE: a second photo of you. This one gets the yellow filter,
+               so pick something simple and high contrast. -->
+          <img src="images/me-2.jpg" alt="Dimitris Neofytou">
+        </div>
+      </div>
+    </div>
+
+    <div class="kit reveal">
+      <div class="kit-row">
+        <h4><span class="ast">✳</span> Studying</h4>
+        <p>BA Graphics and Multimedia, Cyprus University of Technology.</p>
+      </div>
+      <div class="kit-row">
+        <h4><span class="ast">✳</span> Software</h4>
+        <!-- CHANGE: cut anything you would not want to be asked about -->
+        <ul class="tags">
+          <li>Photoshop</li><li>Illustrator</li><li>InDesign</li>
+          <li>Blender</li><li>Unity</li><li>Figma</li>
+          <li>Premiere</li><li>After Effects <em>(learning)</em></li>
+        </ul>
+      </div>
+      <div class="kit-row">
+        <h4><span class="ast">✳</span> Code</h4>
+        <ul class="tags">
+          <li>HTML</li><li>CSS</li><li>JavaScript</li><li>Git &amp; GitHub</li>
+        </ul>
+      </div>
+      <div class="kit-row">
+        <h4><span class="ast">✳</span> Music</h4>
+        <ul class="tags">
+          <li>Ableton Live</li><li>Piano</li><li>Guitar</li><li>Songwriting</li>
+        </ul>
+      </div>
+      <div class="kit-row">
+        <h4><span class="ast">✳</span> Languages</h4>
+        <ul class="tags">
+          <li>Greek <em>native</em></li>
+          <li>English <em>fluent</em></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="end" id="contact">
+  <span class="spark a slow" aria-hidden="true">✳</span>
+  <span class="spark b" aria-hidden="true">✳</span>
+  <div class="wrap">
+    <h2 class="reveal"><em><s>Drop me</s></em><em><s><i>a message.</i></s></em></h2>
+    <a class="mail reveal" href="mailto:dimitrisneo3333@gmail.com">dimitrisneo3333@gmail.com</a>
+    <div class="socials reveal">
+      <a href="https://github.com/Dimitris033" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/dimitris-neofytou-130b9834b/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap"><div class="foot">© 2026 Dimitris Neofytou</div></div>
+</footer>
+
+<a id="top" href="#" aria-label="Back to top">↑</a>
+
+<script>
+var bar = document.getElementById('bar'), nav = document.getElementById('nav'), toTop = document.getElementById('top');
+function onScroll(){
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+  nav.classList.toggle('small', window.scrollY > 40);
+  toTop.classList.toggle('show', window.scrollY > 700);
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+
+var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* parallax - direct children only, so slider photos are left alone */
+var shots = [].slice.call(document.querySelectorAll('.shot > img, .shot > iframe'));
+function parallax(){
+  var vh = window.innerHeight;
+  shots.forEach(function(el){
+    var r = el.getBoundingClientRect();
+    if(r.bottom < 0 || r.top > vh) return;
+    var p = (r.top + r.height/2 - vh/2) / vh;
+    el.style.transform = 'translate3d(0,' + (p * -12).toFixed(1) + 'px,0)';
+  });
+}
+if(!reduce){
+  window.addEventListener('scroll', parallax, {passive:true});
+  window.addEventListener('resize', parallax);
+}
+onScroll();
+
+var io = new IntersectionObserver(function(es){
+  es.forEach(function(e, i){
+    if(e.isIntersecting){
+      e.target.style.transitionDelay = (i * 80) + 'ms';
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+/* section-level fade so blocks arrive as panels */
+var secIO = new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('up'); secIO.unobserve(e.target); } });
+},{threshold:.05});
+document.querySelectorAll('section').forEach(function(s){ secIO.observe(s); });
+
+/* per-project cascade */
+var pieceIO = new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); pieceIO.unobserve(e.target); } });
+},{threshold:.15});
+document.querySelectorAll('.piece').forEach(function(p){ pieceIO.observe(p); });
+
+/* ===========================================================
+   SLIDER
+   Works on any element with data-slider. It counts the photos
+   itself, so adding or removing an <img class="slide"> is all
+   you ever need to do.
+   =========================================================== */
+document.querySelectorAll('[data-slider]').forEach(function(box){
+  var slides = [].slice.call(box.querySelectorAll('.slide'));
+  if(slides.length < 2) return;
+
+  var dotBox = box.querySelector('.dots'),
+      count  = box.querySelector('.s-count'),
+      pbar   = box.querySelector('.s-bar'),
+      speed  = parseInt(box.dataset.speed, 10) || 5000,
+      at     = 0, timer = null, dots = [];
+
+  slides.forEach(function(sl, i){
+    if(i > 0) sl.loading = 'lazy';
+    if(!dotBox) return;
+    var d = document.createElement('button');
+    d.type = 'button';
+    d.setAttribute('aria-label', 'Photo ' + (i + 1));
+    d.addEventListener('click', function(){ go(i); restart(); });
+    dotBox.appendChild(d);
+    dots.push(d);
+  });
+
+  function go(i){
+    at = (i + slides.length) % slides.length;
+    slides.forEach(function(sl, n){ sl.classList.toggle('on', n === at); });
+    dots.forEach(function(d, n){ d.classList.toggle('on', n === at); });
+    if(count) count.innerHTML = '<b>' + String(at + 1).padStart(2, '0') + '</b> / ' + String(slides.length).padStart(2, '0');
+  }
+
+  function tick(){
+    if(!pbar) return;
+    pbar.style.transition = 'none';
+    pbar.style.width = '0';
+    void pbar.offsetWidth;
+    pbar.style.transition = 'width ' + speed + 'ms linear';
+    pbar.style.width = '100%';
+  }
+
+  function restart(){
+    clearInterval(timer);
+    if(reduce) return;
+    tick();
+    timer = setInterval(function(){ go(at + 1); tick(); }, speed);
+  }
+
+  function stop(){
+    clearInterval(timer);
+    if(pbar){ pbar.style.transition = 'none'; pbar.style.width = '0'; }
+  }
+
+  box.querySelector('.next').addEventListener('click', function(){ go(at + 1); restart(); });
+  box.querySelector('.prev').addEventListener('click', function(){ go(at - 1); restart(); });
+
+  box.addEventListener('mouseenter', stop);
+  box.addEventListener('mouseleave', restart);
+  box.addEventListener('focusin', stop);
+  box.addEventListener('focusout', restart);
+
+  box.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight'){ go(at + 1); restart(); }
+    if(e.key === 'ArrowLeft'){ go(at - 1); restart(); }
+  });
+
+  /* only run the timer while the slider is actually on screen */
+  new IntersectionObserver(function(es){
+    es.forEach(function(e){ e.isIntersecting ? restart() : stop(); });
+  },{threshold:.25}).observe(box);
+
+  go(0);
+});
+
+/* ===========================================================
+   THE BOOK
+   Click the right half for the next page, the left half to go
+   back. Arrow keys work too. The page noise is generated in the
+   browser, so there is nothing to download unless you want a
+   real recording at sounds/page-turn.mp3
+   =========================================================== */
+document.querySelectorAll('[data-book]').forEach(function(book){
+  var leaves = [].slice.call(book.querySelectorAll('.leaf')),
+      total  = leaves.length;
+  if(!total) return;
+
+  var wrap  = book.parentNode,
+      cnt   = wrap.querySelector('.b-count'),
+      prevB = wrap.querySelector('[data-prev]'),
+      nextB = wrap.querySelector('[data-next]'),
+      file  = wrap.querySelector('audio'),
+      at = 0, busy = false, actx = null;
+
+  /* paper noise, built on the spot */
+  function rustle(){
+    try{
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      var dur = 0.34, sr = actx.sampleRate, n = Math.floor(dur * sr),
+          buf = actx.createBuffer(1, n, sr), d = buf.getChannelData(0);
+      for(var i = 0; i < n; i++){
+        var t = i / n;
+        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - t, 2.4) * (0.55 + 0.45 * Math.sin(t * Math.PI * 3.4));
+      }
+      var src = actx.createBufferSource(); src.buffer = buf;
+      var bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 0.7;
+      bp.frequency.setValueAtTime(800, actx.currentTime);
+      bp.frequency.exponentialRampToValueAtTime(3400, actx.currentTime + 0.3);
+      var g = actx.createGain(); g.gain.value = 0.16;
+      src.connect(bp); bp.connect(g); g.connect(actx.destination);
+      src.start();
+    }catch(err){}
+  }
+
+  function play(){
+    if(file && file.readyState > 2){ file.currentTime = 0; file.play().catch(function(){}); return; }
+    rustle();
+  }
+
+  function stack(){
+    leaves.forEach(function(lf, i){
+      var turned = i < at;
+      lf.classList.toggle('turned', turned);
+      lf.style.zIndex = turned ? i + 1 : total - i;
+    });
+  }
+
+  function label(){
+    if(cnt) cnt.innerHTML = '<b>' + String(at).padStart(2,'0') + '</b> / ' + String(total).padStart(2,'0');
+    if(prevB) prevB.disabled = (at === 0);
+    if(nextB) nextB.disabled = (at === total);
+  }
+
+  function go(n){
+    if(busy) return;
+    n = Math.max(0, Math.min(total, n));
+    if(n === at) return;
+    var moving = leaves[n > at ? at : n];
+    at = n; busy = true;
+    stack();
+    moving.style.zIndex = total + 3;
+    play(); label();
+    setTimeout(function(){ busy = false; stack(); }, reduce ? 30 : 880);
+  }
+
+  book.addEventListener('click', function(e){
+    var r = book.getBoundingClientRect();
+    go(at + ((e.clientX - r.left > r.width / 2) ? 1 : -1));
+  });
+  book.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight'){ e.preventDefault(); go(at + 1); }
+    if(e.key === 'ArrowLeft'){ e.preventDefault(); go(at - 1); }
+  });
+  if(nextB) nextB.addEventListener('click', function(){ go(at + 1); });
+  if(prevB) prevB.addEventListener('click', function(){ go(at - 1); });
+
+  stack(); label();
+});
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function makePH(img){
+  if(img.dataset.ph) return; img.dataset.ph='1';
+  var label = esc(img.getAttribute('alt') || 'Add your image');
+  var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='900' height='700'>"
+    + "<rect width='100%' height='100%' fill='#1A1A1A'/>"
+    + "<text x='50%' y='50%' fill='#F2B705' font-family='Inter,Arial,sans-serif' font-size='28' "
+    + "text-anchor='middle' dominant-baseline='middle'>"+label+"</text></svg>";
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+}
+document.querySelectorAll('.shot, .pol, .book').forEach(function(box){
+  ['tl','tr','bl','br'].forEach(function(pos){
+    var c = document.createElement('span'); c.className = 'c ' + pos; box.appendChild(c);
+  });
+});
+document.querySelectorAll('img').forEach(function(img){
+  img.addEventListener('error',function(){ makePH(this); });
+  if(img.complete && img.naturalWidth===0){ makePH(img); }
+});
+</script>
+
+</body>
+</html>
